@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>HOG不正传 | On the Way</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="闲话历史HOG(histogram of oriented gradients)是object detection中非常popular的特征，对于行人检测尤其有效，能够较好地捕捉行人轮廓。最早由 Navneet Dalal和Bill Triggs在2005年的CVPR论文Histograms of Oriented Gradients for Human Detection中提出（这篇神文的应用量">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HOG不正传">
+<meta property="og:url" content="http://apprenticez.github.io/2013/10/08/hog-feature/index.html">
+<meta property="og:site_name" content="On the Way">
+<meta property="og:description" content="闲话历史HOG(histogram of oriented gradients)是object detection中非常popular的特征，对于行人检测尤其有效，能够较好地捕捉行人轮廓。最早由 Navneet Dalal和Bill Triggs在2005年的CVPR论文Histograms of Oriented Gradients for Human Detection中提出（这篇神文的应用量">
+<meta property="og:image" content="https://googledrive.com/host/0B4Q6lG2QqMaHNDdNYm8zYlFTT2M">
+<meta property="og:updated_time" content="2013-10-08T14:01:01.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="HOG不正传">
+<meta name="twitter:description" content="闲话历史HOG(histogram of oriented gradients)是object detection中非常popular的特征，对于行人检测尤其有效，能够较好地捕捉行人轮廓。最早由 Navneet Dalal和Bill Triggs在2005年的CVPR论文Histograms of Oriented Gradients for Human Detection中提出（这篇神文的应用量">
+  
+    <link rel="alternative" href="/atom.xml" title="On the Way" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+
+</head>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">On the Way</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">One thousand heavy steps forward, not one back</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://apprenticez.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-hog-feature" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2013/10/08/hog-feature/" class="article-date">
+  <time datetime="2013-10-08T12:01:00.000Z" itemprop="datePublished">2013-10-08</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/research/">research</a>►<a class="article-category-link" href="/categories/research/note/">note</a>►<a class="article-category-link" href="/categories/research/note/computer-vision/">computer vision</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      HOG不正传
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="闲话历史">闲话历史</h4><p>HOG(histogram of oriented gradients)是object detection中非常popular的特征，对于行人检测尤其有效，能够较好地捕捉行人轮廓。最早由 Navneet Dalal和Bill Triggs在2005年的CVPR论文<a href="lear.inrialpes.fr/people/triggs/pubs/Dalal-cvpr05.pdf">Histograms of Oriented Gradients for Human Detection</a>中提出（这篇神文的应用量已经达到6000+次了）。  </p>
+<p>所谓“长江后浪推前浪，一代更比一代<s>浪</s>(强)！”. Brown University的<a href="cs.brown.edu/~pff/">pff</a>使用HOG特征加上DPM模型和latent SVM学习，多次在<a href="pascallin.ecs.soton.ac.uk/challenges/VOC/">VOC challenge</a>中夺魁 (btw, DPM是他在University of Chicago的工作) ，最终获得lifetime achievement的title(新闻见<a href="http://pascallin.ecs.soton.ac.uk/challenges/VOC/voc2010/workshop/" target="_blank" rel="external">这里</a>).  </p>
+<p>又所谓“不开源代码的工作都是耍流氓”，作为一代神作，pff和他的合作者们孜孜不倦地迭代了5个版本的<a href="www.cs.berkeley.edu/~rbg/latent/">DPM software package</a>，引用另一个我很欣赏的计算机视觉研究者<a href="http://quantombone.blogspot.com" target="_blank" rel="external">Tomasz Malisiewicz</a> (顺便推荐一下此人的blog, 有很多干货)的话来说，”A key ingredient to successful object recognition research is a powerful codebase, which you will hopefully one day outgrow and/or extend. “（原文见<a href="http://quantombone.blogspot.com/2011/01/if-you-are-starting-your-research-in.html" target="_blank" rel="external">Tomasz的日志</a>）</p>
+<p>DPM software package如此流行，所以本文结合<a href="http://people.cs.uchicago.edu/~pff/papers/lsvm-pami.pdf" target="_blank" rel="external">DPM PAMI论文</a>中的理论及软件包中features.cc的代码介绍HOG特征的计算。关于OpenCV的HOG源码分析也有不少<a href="http://www.cnblogs.com/tornadomeet/archive/2012/08/15/2640754.html" target="_blank" rel="external">资源</a>，供使用OpenCV的研究者参考。</p>
+<h4 id="Why_is_HOG_effective?">Why is HOG effective?</h4><p><strong>为啥HOG特征这么有效呢？</strong> 手工设计一个特征，比如DOG, HOG, LBP等等（感兴趣的童鞋可以戳Zhu Songchun主页上关于CV研究的<a href="http://www.stat.ucla.edu/~sczhu/Comic_pictures" target="_blank" rel="external">漫画</a>），在我看来HOG特征的设计如同飞来神笔，仍然是一件非常神秘的事情。对着这个问题的解释主要参考了HOG的<a href="http://en.wikipedia.org/wiki/Histogram_of_oriented_gradients" target="_blank" rel="external">wiki页面</a></p>
+<p>HOG的基本思想是，图像中局部物体的轮廓和形状可以用灰度值梯度强度和方向的分布描述。将图像划分成小块的连通区域(称作cell, 这是一种“sliding window”的方法), 计算cell内像素点的梯度方向的直方图(histogram of gradient directions). 为了使特征对光照和阴影保持不变性，将几个cell聚合成一个block, 对直方图进行contrast-normalization.<br>相对于其他特征，HOG有以下两点优势  </p>
+<ul>
+<li>对局部区域进行操作，对geometric and photometric transformation保持不变性  </li>
+<li>对于行人，只要目标保持直立姿态(upright), HOG特征不受身体运动的影响，因此HOG特征对行人检测效果特别好</li>
+</ul>
+<p><code>题外话</code> 关于如何学出一个特征这个一度像黑匣子一样神秘的问题，Deep Learning研究在该问题上取得了一定进展，不过我对此方向不太了解，且这不是本文的话题，保持持续关注，暂且按下不表。pluskid大神关于deep learning发表了一篇<a href="http://freemind.pluskid.org/machine-learning/deep-learning-and-shallow-learning/" target="_blank" rel="external">blog</a>, 不明觉厉，值得一看。</p>
+<p>灌了好些水，也该上点干货了，请猛烈点击下方的<code>Read on</code>按钮继续阅读 XD. </p>
+<a id="more"></a>
+<h4 id="Pixel-level_feature_maps">Pixel-level feature maps</h4><p>令$\theta(x, y)$和$\gamma(x, y)$分别表示图像中$(x, y)$坐标处的方向(orientation)和强度(magnitude). 使用模板[-1, 0, 1]及其转置计算梯度。对于彩色图像，计算每个通道的梯度，选择其中的最大梯度值作为该点的梯度值。</p>
+<p>将gradient orientation离散化到$p$个值，分别记contrast sensitive和insensitive为$$B_1$$和$$B_2$$，简记为$$B$$. 其中</p>
+<p>$$<br>\begin{equation}<br>\begin{cases}<br>B_1(x, y) = round(\frac{p\theta(x, y)}{2 \pi})\ mod\ p \<br>B_2(x, y) = round(\frac{p\theta(x, y)}{\pi})\ mod\ p<br>\end{cases}<br>\end{equation}<br>$$</p>
+<p>对每个像素点$(x, y)$定义feature map, 其中$b \in {0, \ldots, p-1}$</p>
+<p>$$<br>\begin{equation}<br>F(x, y) =<br>\begin{cases}<br>r(x, y) &amp; if\ b = B(x, y) \<br>0 &amp; otherwise<br>\end{cases}<br>\end{equation}<br>$$</p>
+<p><code>注</code> Feature map是一个p维稀疏向量，除b外的值都是0. 将feature map看作oriented edge map, 根据gradient orientation选择p个通道中的一个，</p>
+<h4 id="Spatial_Aggregation">Spatial Aggregation</h4><p>记$F$为大小为$w \times h$的图像的feature map, 将pixel-level feature map $F$聚合成cell-based feature map $C$, 每个cell是一个$k \times k$的正方形. 空间聚合能够使特征对微小形变具有不变性，同时减小feature map的维度。<br>聚合方法采用”soft binning”的方法，用双线性插值法，将每个pixel feature map分配到与其相邻的4个cell中。具体方法见下节</p>
+<h4 id="Normalization_and_truncation">Normalization and truncation</h4><ul>
+<li>Normalization factor的计算</li>
+</ul>
+<p>$$<br>\begin{equation}<br>N_{\delta, \gamma} = (||C(i, j)||^2 + ||C(i+\delta, j)||^2 + ||C(i, j+\gamma)||^2 + ||C(i+\delta, j+\gamma)||^2)^{\frac{1}{2}}<br>\end{equation}<br>$$</p>
+<p>其中$\delta, \gamma \in {-1, 1}$<br>每个normalization factor计算包括$C(i, j)$的4个cell领域构成的block的<em>gradient energy</em>, $N_{-1, -1}$的block构成如下图所示，绿色区域为$C(i, j)$, 其他blockd的构成可依此类推。</p>
+<center><br><img src="https://googledrive.com/host/0B4Q6lG2QqMaHNDdNYm8zYlFTT2M" title="normalization factor illustration"><br></center>
+
+<ul>
+<li>定义Trucation函数$T_{\alpha}(v)$, 将向量$v$中的任一元素$v(i)$与$\alpha$比较，取其中的较小值。</li>
+</ul>
+<p>最终HoG feature map将经过truncation和normalization操作的的cell-based feature map $C$连接在一起。  </p>
+<p>$$<br>\begin{equation}<br>H(i, j) =<br>\begin{pmatrix}<br>T<em>{\alpha}(C(i, j)/N</em>{-1, -1}(i, j)) \<br>T<em>{\alpha}(C(i, j)/N</em>{+1, -1}(i, j)) \<br>T<em>{\alpha}(C(i, j)/N</em>{+1, +1}(i, j)) \<br>T<em>{\alpha}(C(i, j)/N</em>{-1, +1}(i, j))<br>\end{pmatrix}<br>\end{equation}<br>$$</p>
+<p>常用的参数为cell size $k = 8$, $\alpha = 0.2$, $p = 9$. </p>
+<h4 id="代码分析">代码分析</h4><p><code>features.cc</code>是<a href="www.cs.berkeley.edu/~rbg/latent/">DPM software package</a>中用于计算HoG特征的c++代码，package主要用MATLAB开发，计算量较大的部分如HoG特征和卷积的计算使用c++语言开发。  </p>
+<ul>
+<li>mex函数入口<br>函数原型为<code>F = features(image, bin)</code>，第一个输入参数为三通道彩色图像，灰度值必须为double型(MATLAB的默认精度)，第二个输入参数为cell size的边长，即上文中的$k$, 返回值为输入图像<code>image</code>的HoG特征。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// matlab entry point</span></span><br><span class="line"><span class="comment">// F = features(image, bin)</span></span><br><span class="line"><span class="comment">// image should be color with double values</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">mexFunction</span><span class="params">(<span class="keyword">int</span> nlhs, mxArray *plhs[], <span class="keyword">int</span> nrhs, <span class="keyword">const</span> mxArray *prhs[])</span> </span>&#123; </span><br><span class="line">  <span class="keyword">if</span> (nrhs != <span class="number">2</span>)</span><br><span class="line">    mexErrMsgTxt(<span class="string">"Wrong number of inputs"</span>); </span><br><span class="line">  <span class="keyword">if</span> (nlhs != <span class="number">1</span>)</span><br><span class="line">    mexErrMsgTxt(<span class="string">"Wrong number of outputs"</span>);</span><br><span class="line">  plhs[<span class="number">0</span>] = process(prhs[<span class="number">0</span>], prhs[<span class="number">1</span>]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>HoG特征计算主函数process<br>cache some values for looking up. </li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// small value, used to avoid division by zero</span></span><br><span class="line"><span class="preprocessor">#<span class="keyword">define</span> eps <span class="number">0.0001</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// unit vectors used to compute gradient orientation</span></span><br><span class="line"><span class="keyword">double</span> uu[<span class="number">9</span>] = &#123;<span class="number">1.0000</span>, </span><br><span class="line">		<span class="number">0.9397</span>, </span><br><span class="line">		<span class="number">0.7660</span>, </span><br><span class="line">		<span class="number">0.500</span>, </span><br><span class="line">		<span class="number">0.1736</span>, </span><br><span class="line">		-<span class="number">0.1736</span>, </span><br><span class="line">		-<span class="number">0.5000</span>, </span><br><span class="line">		-<span class="number">0.7660</span>, </span><br><span class="line">		-<span class="number">0.9397</span>&#125;;</span><br><span class="line"><span class="keyword">double</span> vv[<span class="number">9</span>] = &#123;<span class="number">0.0000</span>, </span><br><span class="line">		<span class="number">0.3420</span>, </span><br><span class="line">		<span class="number">0.6428</span>, </span><br><span class="line">		<span class="number">0.8660</span>, </span><br><span class="line">		<span class="number">0.9848</span>, </span><br><span class="line">		<span class="number">0.9848</span>, </span><br><span class="line">		<span class="number">0.8660</span>, </span><br><span class="line">		<span class="number">0.6428</span>, </span><br><span class="line">		<span class="number">0.3420</span>&#125;;</span><br></pre></td></tr></table></figure>
+<p>函数原型<code>mxArray *process(const mxArray *mximage, const mxArray *mxsbin)</code>, <code>mxArray</code>为mex内建类型，<code>mximage</code>为输入图像，<code>mxsbin</code>为cell size边长</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// main function:</span></span><br><span class="line"><span class="comment">// takes a double color image and a bin size </span></span><br><span class="line"><span class="comment">// returns HOG features</span></span><br><span class="line"><span class="function">mxArray *<span class="title">process</span><span class="params">(<span class="keyword">const</span> mxArray *mximage, <span class="keyword">const</span> mxArray *mxsbin)</span></span></span><br></pre></td></tr></table></figure>
+<p>将mex内建类型转换成c++数据类型</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">double</span> *im = (<span class="keyword">double</span> *)mxGetPr(mximage); <span class="comment">// im指针指向输入图像</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> *dims = mxGetDimensions(mximage); <span class="comment">// 输入图像的维度信息[h, w, 深度]</span></span><br><span class="line"><span class="comment">// 图像必须是三通道彩色图像，数据精度为double</span></span><br><span class="line"><span class="keyword">if</span> (mxGetNumberOfDimensions(mximage) != <span class="number">3</span> ||</span><br><span class="line">    dims[<span class="number">2</span>] != <span class="number">3</span> ||</span><br><span class="line">    mxGetClassID(mximage) != mxDOUBLE_CLASS)</span><br><span class="line">  mexErrMsgTxt(<span class="string">"Invalid input"</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> sbin = (<span class="keyword">int</span>)mxGetScalar(mxsbin); <span class="comment">// cell size的边长</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// memory for caching orientation histograms &amp; their norms</span></span><br><span class="line"><span class="keyword">int</span> blocks[<span class="number">2</span>];</span><br><span class="line">blocks[<span class="number">0</span>] = (<span class="keyword">int</span>)round((<span class="keyword">double</span>)dims[<span class="number">0</span>]/(<span class="keyword">double</span>)sbin); <span class="comment">// cell的个数 h/k</span></span><br><span class="line">blocks[<span class="number">1</span>] = (<span class="keyword">int</span>)round((<span class="keyword">double</span>)dims[<span class="number">1</span>]/(<span class="keyword">double</span>)sbin); <span class="comment">// cell个数 w/k</span></span><br><span class="line"><span class="comment">// 为计算pixel feature map和normalized feature map开辟空间</span></span><br><span class="line"><span class="comment">// p = 9, contrast sensitive B1和contrast insensitive B2，共开辟空间18</span></span><br><span class="line"><span class="keyword">double</span> *hist = (<span class="keyword">double</span> *)mxCalloc(blocks[<span class="number">0</span>]*blocks[<span class="number">1</span>]*<span class="number">18</span>, <span class="keyword">sizeof</span>(<span class="keyword">double</span>));</span><br><span class="line"><span class="keyword">double</span> *norm = (<span class="keyword">double</span> *)mxCalloc(blocks[<span class="number">0</span>]*blocks[<span class="number">1</span>], <span class="keyword">sizeof</span>(<span class="keyword">double</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">// memory for HOG features</span></span><br><span class="line"><span class="keyword">int</span> out[<span class="number">3</span>];</span><br><span class="line"><span class="comment">// out[0], out[1]减2的原因：上下边缘无法计算4领域normalization</span></span><br><span class="line">out[<span class="number">0</span>] = max(blocks[<span class="number">0</span>]-<span class="number">2</span>, <span class="number">0</span>);	<span class="comment">//输出的y维度</span></span><br><span class="line">out[<span class="number">1</span>] = max(blocks[<span class="number">1</span>]-<span class="number">2</span>, <span class="number">0</span>);	<span class="comment">//输出的x维度</span></span><br><span class="line">out[<span class="number">2</span>] = <span class="number">27</span>+<span class="number">4</span>+<span class="number">1</span>;  <span class="comment">//每个block的特征维度</span></span><br><span class="line">mxArray *mxfeat = mxCreateNumericArray(<span class="number">3</span>, out, mxDOUBLE_CLASS, mxREAL);</span><br><span class="line"><span class="keyword">double</span> *feat = (<span class="keyword">double</span> *)mxGetPr(mxfeat);</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> visible[<span class="number">2</span>];</span><br><span class="line">visible[<span class="number">0</span>] = blocks[<span class="number">0</span>]*sbin;	</span><br><span class="line">visible[<span class="number">1</span>] = blocks[<span class="number">1</span>]*sbin;</span><br></pre></td></tr></table></figure>
+<p>计算每一点$(x, y)$的pixel-level feature map  </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">// 遍历每个visible pixel (x, y)</span></span><br><span class="line"> <span class="keyword">for</span> (<span class="keyword">int</span> x = <span class="number">1</span>; x &lt; visible[<span class="number">1</span>]-<span class="number">1</span>; x++) &#123;</span><br><span class="line">   <span class="keyword">for</span> (<span class="keyword">int</span> y = <span class="number">1</span>; y &lt; visible[<span class="number">0</span>]-<span class="number">1</span>; y++) &#123;</span><br><span class="line">     <span class="comment">// 计算每个色彩通道的gradient orientation</span></span><br><span class="line">     <span class="comment">// first color channel</span></span><br><span class="line">     <span class="keyword">double</span> *s = im + min(x, dims[<span class="number">1</span>]-<span class="number">2</span>)*dims[<span class="number">0</span>] + min(y, dims[<span class="number">0</span>]-<span class="number">2</span>);</span><br><span class="line">     <span class="keyword">double</span> dy = *(s+<span class="number">1</span>) - *(s-<span class="number">1</span>);</span><br><span class="line">     <span class="keyword">double</span> dx = *(s+dims[<span class="number">0</span>]) - *(s-dims[<span class="number">0</span>]);</span><br><span class="line">     <span class="keyword">double</span> v = dx*dx + dy*dy;</span><br><span class="line"></span><br><span class="line">     <span class="comment">// second color channel</span></span><br><span class="line">     s += dims[<span class="number">0</span>]*dims[<span class="number">1</span>];</span><br><span class="line">     <span class="keyword">double</span> dy2 = *(s+<span class="number">1</span>) - *(s-<span class="number">1</span>);</span><br><span class="line">     <span class="keyword">double</span> dx2 = *(s+dims[<span class="number">0</span>]) - *(s-dims[<span class="number">0</span>]);</span><br><span class="line">     <span class="keyword">double</span> v2 = dx2*dx2 + dy2*dy2;</span><br><span class="line"></span><br><span class="line">     <span class="comment">// third color channel</span></span><br><span class="line">     s += dims[<span class="number">0</span>]*dims[<span class="number">1</span>];</span><br><span class="line">     <span class="keyword">double</span> dy3 = *(s+<span class="number">1</span>) - *(s-<span class="number">1</span>);</span><br><span class="line">     <span class="keyword">double</span> dx3 = *(s+dims[<span class="number">0</span>]) - *(s-dims[<span class="number">0</span>]);</span><br><span class="line">     <span class="keyword">double</span> v3 = dx3*dx3 + dy3*dy3;</span><br><span class="line"></span><br><span class="line">     <span class="comment">// pick channel with strongest gradient</span></span><br><span class="line">     <span class="keyword">if</span> (v2 &gt; v) &#123;  <span class="comment">// 把最强的边缘保持在v，dx，dy里</span></span><br><span class="line">v = v2;</span><br><span class="line">dx = dx2;</span><br><span class="line">dy = dy2;</span><br><span class="line">     &#125; </span><br><span class="line">     <span class="keyword">if</span> (v3 &gt; v) &#123;</span><br><span class="line">v = v3;</span><br><span class="line">dx = dx3;</span><br><span class="line">dy = dy3;</span><br><span class="line">     &#125;</span><br><span class="line"></span><br><span class="line">     <span class="comment">// snap to one of 18 orientations</span></span><br><span class="line">     <span class="keyword">double</span> best_dot = <span class="number">0</span>;</span><br><span class="line">     <span class="keyword">int</span> best_o = <span class="number">0</span>;</span><br><span class="line">     <span class="keyword">for</span> (<span class="keyword">int</span> o = <span class="number">0</span>; o &lt; <span class="number">9</span>; o++) &#123;</span><br><span class="line">	<span class="keyword">double</span> dot = uu[o]*dx + vv[o]*dy; <span class="comment">// 在9个方向上，正负就是18个方向</span></span><br><span class="line">	<span class="keyword">if</span> (dot &gt; best_dot) &#123;		<span class="comment">//在那个方向上的响应最大，结果保存在best_dot里</span></span><br><span class="line">	  best_dot = dot;</span><br><span class="line">	  best_o = o;</span><br><span class="line">	&#125; <span class="keyword">else</span> <span class="keyword">if</span> (-dot &gt; best_dot) &#123;</span><br><span class="line">	  best_dot = -dot;</span><br><span class="line">	  best_o = o+<span class="number">9</span>;</span><br><span class="line">	&#125;</span><br><span class="line">     &#125;</span><br><span class="line">     </span><br><span class="line">     <span class="comment">// add to 4 histograms around pixel using linear interpolation</span></span><br><span class="line">     <span class="keyword">double</span> xp = ((<span class="keyword">double</span>)x+<span class="number">0.5</span>)/(<span class="keyword">double</span>)sbin - <span class="number">0.5</span>;</span><br><span class="line">     <span class="keyword">double</span> yp = ((<span class="keyword">double</span>)y+<span class="number">0.5</span>)/(<span class="keyword">double</span>)sbin - <span class="number">0.5</span>;</span><br><span class="line">     <span class="keyword">int</span> ixp = (<span class="keyword">int</span>)<span class="built_in">floor</span>(xp);</span><br><span class="line">     <span class="keyword">int</span> iyp = (<span class="keyword">int</span>)<span class="built_in">floor</span>(yp);</span><br><span class="line">     <span class="keyword">double</span> vx0 = xp-ixp;  <span class="comment">//在block里的位置比例</span></span><br><span class="line">     <span class="keyword">double</span> vy0 = yp-iyp;  </span><br><span class="line">     <span class="keyword">double</span> vx1 = <span class="number">1.0</span>-vx0;  <span class="comment">//在block里另外一边的位置比例</span></span><br><span class="line">     <span class="keyword">double</span> vy1 = <span class="number">1.0</span>-vy0;</span><br><span class="line">     v = <span class="built_in">sqrt</span>(v);</span><br><span class="line"></span><br><span class="line">     <span class="keyword">if</span> (ixp &gt;= <span class="number">0</span> &amp;&amp; iyp &gt;= <span class="number">0</span>) &#123; <span class="comment">//像素对应那个block 一个像素要投在4个block里</span></span><br><span class="line">*(hist + ixp*blocks[<span class="number">0</span>] + iyp + best_o*blocks[<span class="number">0</span>]*blocks[<span class="number">1</span>]) += </span><br><span class="line">  vx1*vy1*v;	<span class="comment">//在block里的位置和强度乘积</span></span><br><span class="line">     &#125;</span><br><span class="line"></span><br><span class="line">     <span class="keyword">if</span> (ixp+<span class="number">1</span> &lt; blocks[<span class="number">1</span>] &amp;&amp; iyp &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">*(hist + (ixp+<span class="number">1</span>)*blocks[<span class="number">0</span>] + iyp + best_o*blocks[<span class="number">0</span>]*blocks[<span class="number">1</span>]) += </span><br><span class="line">  vx0*vy1*v;</span><br><span class="line">     &#125;</span><br><span class="line"></span><br><span class="line">     <span class="keyword">if</span> (ixp &gt;= <span class="number">0</span> &amp;&amp; iyp+<span class="number">1</span> &lt; blocks[<span class="number">0</span>]) &#123;</span><br><span class="line">*(hist + ixp*blocks[<span class="number">0</span>] + (iyp+<span class="number">1</span>) + best_o*blocks[<span class="number">0</span>]*blocks[<span class="number">1</span>]) += </span><br><span class="line">  vx1*vy0*v;</span><br><span class="line">     &#125;</span><br><span class="line"></span><br><span class="line">     <span class="keyword">if</span> (ixp+<span class="number">1</span> &lt; blocks[<span class="number">1</span>] &amp;&amp; iyp+<span class="number">1</span> &lt; blocks[<span class="number">0</span>]) &#123;</span><br><span class="line">*(hist + (ixp+<span class="number">1</span>)*blocks[<span class="number">0</span>] + (iyp+<span class="number">1</span>) + best_o*blocks[<span class="number">0</span>]*blocks[<span class="number">1</span>]) += </span><br><span class="line">  vx0*vy0*v;</span><br><span class="line">     &#125;</span><br><span class="line">   &#125;</span><br><span class="line"> &#125;</span><br><span class="line">   <span class="comment">// compute energy in each block by summing over orientations</span></span><br><span class="line">   <span class="comment">// 计算normalization factors</span></span><br><span class="line"> <span class="keyword">for</span> (<span class="keyword">int</span> o = <span class="number">0</span>; o &lt; <span class="number">9</span>; o++) &#123; <span class="comment">//每个方向分别做，0和9 1和10， 每次处理2个方向</span></span><br><span class="line">   <span class="keyword">double</span> *src1 = hist + o*blocks[<span class="number">0</span>]*blocks[<span class="number">1</span>];</span><br><span class="line">   <span class="keyword">double</span> *src2 = hist + (o+<span class="number">9</span>)*blocks[<span class="number">0</span>]*blocks[<span class="number">1</span>];</span><br><span class="line">   <span class="keyword">double</span> *dst = norm;</span><br><span class="line">   <span class="keyword">double</span> *end = norm + blocks[<span class="number">1</span>]*blocks[<span class="number">0</span>];</span><br><span class="line">   <span class="keyword">while</span> (dst &lt; end) &#123;</span><br><span class="line">     *(dst++) += (*src1 + *src2) * (*src1 + *src2); <span class="comment">//成对方向相加后平方，累计所有的9对方向</span></span><br><span class="line">     src1++;</span><br><span class="line">     src2++;</span><br><span class="line">   &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>计算HoG特征, concatenating normalized cell-based feature map</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// compute features</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> x = <span class="number">0</span>; x &lt; out[<span class="number">1</span>]; x++) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> y = <span class="number">0</span>; y &lt; out[<span class="number">0</span>]; y++) &#123;</span><br><span class="line">      <span class="keyword">double</span> *dst = feat + x*out[<span class="number">0</span>] + y;      </span><br><span class="line">      <span class="keyword">double</span> *src, *p, n1, n2, n3, n4; <span class="comment">// n1-n4为4个normalization factors</span></span><br><span class="line">		<span class="comment">//统计 16个block的综合，归一化，每4个一组</span></span><br><span class="line">      p = norm + (x+<span class="number">1</span>)*blocks[<span class="number">0</span>] + y+<span class="number">1</span>; <span class="comment">//y+1， x+1block里的norm ， </span></span><br><span class="line">      n1 = <span class="number">1.0</span> / <span class="built_in">sqrt</span>(*p + *(p+<span class="number">1</span>) + *(p+blocks[<span class="number">0</span>]) + *(p+blocks[<span class="number">0</span>]+<span class="number">1</span>) + eps); <span class="comment">//4个block里的和</span></span><br><span class="line">      p = norm + (x+<span class="number">1</span>)*blocks[<span class="number">0</span>] + y;</span><br><span class="line">      n2 = <span class="number">1.0</span> / <span class="built_in">sqrt</span>(*p + *(p+<span class="number">1</span>) + *(p+blocks[<span class="number">0</span>]) + *(p+blocks[<span class="number">0</span>]+<span class="number">1</span>) + eps);</span><br><span class="line">      p = norm + x*blocks[<span class="number">0</span>] + y+<span class="number">1</span>;</span><br><span class="line">      n3 = <span class="number">1.0</span> / <span class="built_in">sqrt</span>(*p + *(p+<span class="number">1</span>) + *(p+blocks[<span class="number">0</span>]) + *(p+blocks[<span class="number">0</span>]+<span class="number">1</span>) + eps);</span><br><span class="line">      p = norm + x*blocks[<span class="number">0</span>] + y;      </span><br><span class="line">      n4 = <span class="number">1.0</span> / <span class="built_in">sqrt</span>(*p + *(p+<span class="number">1</span>) + *(p+blocks[<span class="number">0</span>]) + *(p+blocks[<span class="number">0</span>]+<span class="number">1</span>) + eps);</span><br><span class="line"></span><br><span class="line">      <span class="keyword">double</span> t1 = <span class="number">0</span>;</span><br><span class="line">      <span class="keyword">double</span> t2 = <span class="number">0</span>;</span><br><span class="line">      <span class="keyword">double</span> t3 = <span class="number">0</span>;</span><br><span class="line">      <span class="keyword">double</span> t4 = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">      <span class="comment">// contrast-sensitive features	</span></span><br><span class="line">      src = hist + (x+<span class="number">1</span>)*blocks[<span class="number">0</span>] + (y+<span class="number">1</span>);</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">int</span> o = <span class="number">0</span>; o &lt; <span class="number">18</span>; o++) &#123;</span><br><span class="line">      <span class="comment">// truncation操作, h1-h4为H(i, j)的4个分量</span></span><br><span class="line">	<span class="keyword">double</span> h1 = min(*src * n1, <span class="number">0.2</span>);</span><br><span class="line">	<span class="keyword">double</span> h2 = min(*src * n2, <span class="number">0.2</span>);</span><br><span class="line">	<span class="keyword">double</span> h3 = min(*src * n3, <span class="number">0.2</span>);</span><br><span class="line">	<span class="keyword">double</span> h4 = min(*src * n4, <span class="number">0.2</span>);</span><br><span class="line">	*dst = <span class="number">0.5</span> * (h1 + h2 + h3 + h4);</span><br><span class="line">	<span class="comment">// t1-t4 cache for computing texture</span></span><br><span class="line">	t1 += h1;</span><br><span class="line">	t2 += h2;</span><br><span class="line">	t3 += h3;</span><br><span class="line">	t4 += h4;</span><br><span class="line">	dst += out[<span class="number">0</span>]*out[<span class="number">1</span>];</span><br><span class="line">	src += blocks[<span class="number">0</span>]*blocks[<span class="number">1</span>];</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="comment">// contrast-insensitive features</span></span><br><span class="line">      src = hist + (x+<span class="number">1</span>)*blocks[<span class="number">0</span>] + (y+<span class="number">1</span>);</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">int</span> o = <span class="number">0</span>; o &lt; <span class="number">9</span>; o++) &#123;</span><br><span class="line">        <span class="keyword">double</span> sum = *src + *(src + <span class="number">9</span>*blocks[<span class="number">0</span>]*blocks[<span class="number">1</span>]);</span><br><span class="line">        <span class="keyword">double</span> h1 = min(sum * n1, <span class="number">0.2</span>);</span><br><span class="line">        <span class="keyword">double</span> h2 = min(sum * n2, <span class="number">0.2</span>);</span><br><span class="line">        <span class="keyword">double</span> h3 = min(sum * n3, <span class="number">0.2</span>);</span><br><span class="line">        <span class="keyword">double</span> h4 = min(sum * n4, <span class="number">0.2</span>);</span><br><span class="line">        *dst = <span class="number">0.5</span> * (h1 + h2 + h3 + h4);</span><br><span class="line">        dst += out[<span class="number">0</span>]*out[<span class="number">1</span>];</span><br><span class="line">        src += blocks[<span class="number">0</span>]*blocks[<span class="number">1</span>];</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="comment">// texture features</span></span><br><span class="line">      *dst = <span class="number">0.2357</span> * t1;</span><br><span class="line">      dst += out[<span class="number">0</span>]*out[<span class="number">1</span>];</span><br><span class="line">      *dst = <span class="number">0.2357</span> * t2;</span><br><span class="line">      dst += out[<span class="number">0</span>]*out[<span class="number">1</span>];</span><br><span class="line">      *dst = <span class="number">0.2357</span> * t3;</span><br><span class="line">      dst += out[<span class="number">0</span>]*out[<span class="number">1</span>];</span><br><span class="line">      *dst = <span class="number">0.2357</span> * t4;</span><br><span class="line"></span><br><span class="line">      <span class="comment">// truncation feature</span></span><br><span class="line">      dst += out[<span class="number">0</span>]*out[<span class="number">1</span>];</span><br><span class="line">      *dst = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 释放空间，返回特征计算结果</span></span><br><span class="line">  mxFree(hist);</span><br><span class="line">  mxFree(norm);</span><br><span class="line">  <span class="keyword">return</span> mxfeat;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://apprenticez.github.io/2013/10/08/hog-feature/" data-id="cig56axj3000jqmlg367xwb0c" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2013/10/22/notes-put-objects-perspective/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          [Notes]Putting Objects in Perspective
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2013/09/27/note-on-caltech-pedestrian-detection-survey/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">[Notes]CALTECH Pedestrian Detection Survey</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Markdown/">Markdown</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">git</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/git/MOOC/">MOOC</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/note/">note</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/note/">note</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/note/research/">research</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/octopress/">octopress</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/research/">research</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/research/note/">note</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/research/note/computer-vision/">computer vision</a><span class="category-list-count">1</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/呐喊/">呐喊</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">December 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/">October 2013</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/09/">September 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">August 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/07/">July 2013</a><span class="archive-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2015/10/24/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2013/12/17/pro-git-branch/">[Pro Git笔记]第三章 分支</a>
+          </li>
+        
+          <li>
+            <a href="/2013/10/27/note-mid-level-patch/">[Notes]Unsupervised Discovery of Mid-Level Discriminative Patches</a>
+          </li>
+        
+          <li>
+            <a href="/2013/10/22/notes-put-objects-perspective/">[Notes]Putting Objects in Perspective</a>
+          </li>
+        
+          <li>
+            <a href="/2013/10/08/hog-feature/">HOG不正传</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2015 AppreniceZ<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+
+  </div>
+</body>
+</html>
